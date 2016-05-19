@@ -11,4 +11,4 @@ _/    _/  _/_/_/  _/_/_/    _/_/_/  _/      _/    _/_/_/  _/    _/  _/
 
 Current:
 
-https://github.com/Lora-net/LoRaMac-node/tree/deff0fb6ecb3a6ac177f9dbf1cc48d47ed8f2bdb
+https://github.com/Lora-net/LoRaMac-node/tree/c47feaefd0cd41d313c5b76f94dac98be12ec0e6
