@@ -3536,19 +3536,7 @@ LoRaMacStatus_t LoRaMacMibSetRequestConfirm( MibRequestConfirm_t *mibSet )
             if( ValueInRange( mibSet->Param.ChannelsTxPower,
                               LORAMAC_MAX_TX_POWER, LORAMAC_MIN_TX_POWER ) )
             {
-#if defined( USE_BAND_915 ) || defined( USE_BAND_915_HYBRID )
-                int8_t txPower = LimitTxPower( mibSet->Param.ChannelsTxPower );
-                if( txPower == mibSet->Param.ChannelsTxPower )
-                {
-                    ChannelsTxPower = mibSet->Param.ChannelsTxPower;
-                }
-                else
-                {
-                    status = LORAMAC_STATUS_PARAMETER_INVALID;
-                }
-#else
                 ChannelsTxPower = mibSet->Param.ChannelsTxPower;
-#endif
             }
             else
             {
@@ -3812,7 +3800,7 @@ LoRaMacStatus_t LoRaMacMlmeRequest( MlmeReq_t *mlmeRequest )
         {
             if( ( LoRaMacState & MAC_TX_DELAYED ) == MAC_TX_DELAYED )
             {
-                status = LORAMAC_STATUS_BUSY;
+                return LORAMAC_STATUS_BUSY;
             }
 
             MlmeConfirm.MlmeRequest = mlmeRequest->Type;
