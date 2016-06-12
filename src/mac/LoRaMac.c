@@ -1250,11 +1250,6 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
                         }
                     }
 
-                    if( fCtrl.Bits.FOptsLen > 0 )
-                    {
-                        // Decode Options field MAC commands
-                        ProcessMacCommands( payload, 8, appPayloadStartIndex, snr );
-                    }
                     if( ( ( size - 4 ) - appPayloadStartIndex ) > 0 )
                     {
                         port = payload[appPayloadStartIndex++];
@@ -1264,19 +1259,32 @@ static void OnRadioRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t
 
                         if( port == 0 )
                         {
-                            LoRaMacPayloadDecrypt( payload + appPayloadStartIndex,
-                                                   frameLen,
-                                                   nwkSKey,
-                                                   address,
-                                                   DOWN_LINK,
-                                                   downLinkCounter,
-                                                   LoRaMacRxPayload );
+                            if( fCtrl.Bits.FOptsLen == 0 )
+                            {
+                                LoRaMacPayloadDecrypt( payload + appPayloadStartIndex,
+                                                       frameLen,
+                                                       nwkSKey,
+                                                       address,
+                                                       DOWN_LINK,
+                                                       downLinkCounter,
+                                                       LoRaMacRxPayload );
 
-                            // Decode frame payload MAC commands
-                            ProcessMacCommands( LoRaMacRxPayload, 0, frameLen, snr );
+                                // Decode frame payload MAC commands
+                                ProcessMacCommands( LoRaMacRxPayload, 0, frameLen, snr );
+                            }
+                            else
+                            {
+                                skipIndication = true;
+                            }
                         }
                         else
                         {
+                            if( fCtrl.Bits.FOptsLen > 0 )
+                            {
+                                // Decode Options field MAC commands
+                                ProcessMacCommands( payload, 8, appPayloadStartIndex, snr );
+                            }
+
                             LoRaMacPayloadDecrypt( payload + appPayloadStartIndex,
                                                    frameLen,
                                                    appSKey,
@@ -2147,7 +2155,7 @@ static bool AdrNextDr( bool adrEnabled, bool updateChannelMask, int8_t* datarate
             }
             if( AdrAckCounter >= ( ADR_ACK_LIMIT + ADR_ACK_DELAY ) )
             {
-                if( ( ( AdrAckCounter - ADR_ACK_DELAY ) % ADR_ACK_LIMIT ) == 0 )
+                if( ( AdrAckCounter % ADR_ACK_DELAY ) == 0 )
                 {
 #if defined( USE_BAND_433 ) || defined( USE_BAND_780 ) || defined( USE_BAND_868 )
                     if( datarate > LORAMAC_TX_MIN_DATARATE )
@@ -2793,23 +2801,23 @@ static int8_t AlternateDatarate( uint16_t nbTrials )
         datarate = DR_1;
     }
 #else
-    if( ( nbTrials % 48 ) != 0 )
+    if( ( nbTrials % 48 ) == 0 )
     {
         datarate = DR_0;
     }
-    else if( ( nbTrials % 32 ) != 0 )
+    else if( ( nbTrials % 32 ) == 0 )
     {
         datarate = DR_1;
     }
-    else if( ( nbTrials % 24 ) != 0 )
+    else if( ( nbTrials % 24 ) == 0 )
     {
         datarate = DR_2;
     }
-    else if( ( nbTrials % 16 ) != 0 )
+    else if( ( nbTrials % 16 ) == 0 )
     {
         datarate = DR_3;
     }
-    else if( ( nbTrials % 8 ) != 0 )
+    else if( ( nbTrials % 8 ) == 0 )
     {
         datarate = DR_4;
     }
