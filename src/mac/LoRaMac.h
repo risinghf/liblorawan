@@ -149,11 +149,6 @@
  */
 #define LORA_MAC_PUBLIC_SYNCWORD                    0x34
 
- /*!
- * LoRaMac internal state
- */
-//uint32_t LoRaMacState;
-
 /*!
  * LoRaWAN devices classes definition
  */
@@ -272,6 +267,57 @@ typedef struct sRx2ChannelParams
      */
     uint8_t  Datarate;
 }Rx2ChannelParams_t;
+
+/*!
+ * Global MAC layer parameters
+ */
+typedef struct sLoRaMacParams
+{
+    /*!
+     * Channels TX power
+     */
+    int8_t ChannelsTxPower;
+    /*!
+     * Channels data rate
+     */
+    int8_t ChannelsDatarate;
+    /*!
+     * LoRaMac maximum time a reception window stays open
+     */
+    uint32_t MaxRxWindow;
+    /*!
+     * Receive delay 1
+     */
+    uint32_t ReceiveDelay1;
+    /*!
+     * Receive delay 2
+     */
+    uint32_t ReceiveDelay2;
+    /*!
+     * Join accept delay 1
+     */
+    uint32_t JoinAcceptDelay1;
+    /*!
+     * Join accept delay 1
+     */
+    uint32_t JoinAcceptDelay2;
+    /*!
+     * Number of uplink messages repetitions [1:15] (unconfirmed messages only)
+     */
+    uint8_t ChannelsNbRep;
+    /*!
+     * Datarate offset between uplink and downlink on first window
+     */
+    uint8_t Rx1DrOffset;
+    /*!
+     * LoRaMAC 2nd reception window settings
+     */
+    Rx2ChannelParams_t Rx2Channel;
+    /*!
+     * Mask indicating which channels are enabled
+     */
+    uint16_t ChannelsMask[6];
+}LoRaMacParams_t;
 
 /*!
  * LoRaMAC multicast channel parameter

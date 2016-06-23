@@ -13,7 +13,7 @@ LoRaWAN endpoint stack implementation and example projects.
 The aim of this project is to show an example of the endpoint LoRaWAN stack implementation.
 
 This LoRaWAN stack is an EU868 and US915 bands Class A and Class C endpoint implementation
-fully compatible with LoRaWAN 1.0 specification.
+fully compatible with LoRaWAN 1.0.1 specification.
 Each LoRaWAN application example includes the LoRaWAN certification protocol implementation.
 
 SX1272/76 radio drivers are also provided.
@@ -118,7 +118,39 @@ not of a bootloader and the radio frequency band to be used.
 
 6. Changelog
 -------------
-2015-05-13, V4.2.0
+2016-06-22, V4.3.0
+* General
+    1. This version has passed all LoRa-Alliance compliance tests.
+    2. Update the MAC layer in order to be LoRaWAN version 1.0.1 compliant
+    3. Applied to all application files the certification protocol change for LoRaWAN 1.0.1 compliance tests.
+
+       **REMARK**: api-v3 application files aren't updated.
+
+    4. Add radio RX_TIMEOUT irq clear into the irq handler.
+    5. Removed the end less loop from HAL_UART_ErrorCallback.
+    6. Update of the STM32L0 HAL to version 1.6.0
+    7. Consolidated the line endings across all project files.
+       Windows line endings has been choose for almost every file.
+
+* LoRaWAN
+    1. Updated maximum payload size for US band.
+    2. Update datarate offset table for US band.
+    3. Make MAC commands sticky
+    4. Add retransmission back-off
+    5. Remove the TxPower limitation for US band on LoRaMacMibSetRequestConfirm function. The power will be limited anyway when the SendFrameOnChannel functions is called.
+    6. Issue(#81): Bug fix in function LoRaMacMlmeRequest case MLME_JOIN. Function will return LORAMAC_STATUS_BUSY in case the MAC is in status MAC_TX_DELAYED.
+    7. Add debug pin support to LoRaMote platform.
+    8. Updated and improved MPL3115 device driver.
+    9. Issue(#83): Bug fix in parameter validation
+    10. Issue(#84): Fix issue of CalibrateTimer function.
+    11. RTC driver major update
+    12. Applied pull request #87.
+    13. Add a function to verify the RX frequency of window 2 for US band.
+    14. Issue(#88): Bug fix in function PrepareFrame where repeated MAC commands were not handled correctly.
+    15. Bug fix in OnRadioRxDone. Node now drops frames on port 0 with fOpts > 0.
+    16. Bug fix in OnRadioRxDone. Node now receives frames with fOpts > 0 when no payload is present.
+
+2016-05-13, V4.2.0
 * General
     1. This version has passed all LoRa-Alliance compliance tests.
     2. Update STM32L1xx_HAL_Driver version to 1.5. Update related drivers and implementations accordingly.
@@ -150,7 +182,7 @@ not of a bootloader and the radio frequency band to be used.
     12. Accept MAC information of duplicated, confirmed downlinks.
     13. Issue(#74): Drop frames with a downlink counter difference greater or equal to MAX_FCNT_GAP.
 
-2015-03-10, V4.1.0
+2016-03-10, V4.1.0
 * General
     1. This version has passed all mandatory LoRa-Alliance compliance tests.
 
