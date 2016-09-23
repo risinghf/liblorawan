@@ -26,7 +26,7 @@
  *
  * \author    Gregory Cristian ( Semtech )
  *
- * \author    Daniel Jäckle ( STACKFORCE )
+ * \author    Daniel J  ckle ( STACKFORCE )
  *
  * \defgroup  LORAMAC LoRa MAC layer implementation
  *            This module specifies the API implementation of the LoRaMAC layer.
@@ -589,6 +589,11 @@ typedef enum eLoRaMacEventInfoStatus
      * of the downlink counter of the node.
      */
     LORAMAC_EVENT_INFO_STATUS_DOWNLINK_REPEATED,
+    /*!
+     * The MAC could not retransmit a frame due to a datarate decreasement. The
+     * payload size is not applicable for the datarate.
+     */
+    LORAMAC_EVENT_INFO_STATUS_TX_DR_PAYLOAD_SIZE_ERROR,
     /*!
      * The node has lost MAX_FCNT_GAP or more frames.
      */
